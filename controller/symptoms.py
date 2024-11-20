@@ -1,5 +1,4 @@
-from main import app,db
-from bson import json_util
+from main import app
 from flask import request
 from durable.lang import *
 import json 
@@ -14,7 +13,7 @@ def capture_diagnosis(c):
 
 with ruleset('eye_disease'):
     # Define rule for Blepharitis
-    @when_all(m.symptoms.allItems(
+    @when_all(m.symptoms.anyItem(
         item.matches("burning") |
         item.matches("foreign body sensation")|
         item.matches("red lid margins")|
@@ -24,7 +23,7 @@ with ruleset('eye_disease'):
         p.assert_fact('diagnosis', {'disease': 'Blepharitis'})
 
     # Define rule for Stye
-    @when_all(m.symptoms.allItems(
+    @when_all(m.symptoms.anyItem(
         item.matches("lid tenderness")|
         item.matches("pain")|
         item.matches("swelling")|
@@ -33,14 +32,14 @@ with ruleset('eye_disease'):
         p.assert_fact('diagnosis', {'disease': 'Stye'})
 
     # Define rule for Anterior Cellulitis
-    @when_all(m.symptoms.allItems(
+    @when_all(m.symptoms.anyItem(
         item.matches("swollen")|
         item.matches("red lids")))
     def anterior_cellulitis(p):
         p.assert_fact('diagnosis', {'disease': 'Anterior Cellulitis'})
 
     # Define rule for Posterior Cellulitis
-    @when_all(m.symptoms.allItems(
+    @when_all(m.symptoms.anyItem(
         item.matches("swollen red lids")|
         item.matches("swollen red conjunctiva")|
         item.matches("impaired ocular motility")|
@@ -50,7 +49,7 @@ with ruleset('eye_disease'):
         p.assert_fact('diagnosis', {'disease': 'Posterior Cellulitis'})
 
     # Define rule for Nasolacrimal Drainage Obstruction
-    @when_all(m.symptoms.allItems(
+    @when_all(m.symptoms.anyItem(
         item.matches("persistent tearing")|
         item.matches("persistent discharge")|
         item.matches("redness")|
@@ -59,7 +58,7 @@ with ruleset('eye_disease'):
         p.assert_fact('diagnosis', {'disease': 'Nasolacrimal Drainage Obstruction'})
 
     # Define rule for Allergic Conjunctivitis
-    @when_all(m.symptoms.allItems(
+    @when_all(m.symptoms.anyItem(
         item.matches("palpebral redness")|
         item.matches("diffuse redness")|
         item.matches("watery")|
@@ -71,7 +70,7 @@ with ruleset('eye_disease'):
         p.assert_fact('diagnosis', {'disease': 'Allergic Conjunctivitis'})
 
     # Define rule for Bacterial Conjunctivitis
-    @when_all(m.symptoms.allItems(
+    @when_all(m.symptoms.anyItem(
         item.matches("palpebral redness")|
         item.matches("diffuse redness")|
         item.matches("purulent")))
@@ -79,7 +78,7 @@ with ruleset('eye_disease'):
         p.assert_fact('diagnosis', {'disease': 'Bacterial Conjunctivitis'})
 
     # Define rule for Viral Conjunctivitis
-    @when_all(m.symptoms.allItems(
+    @when_all(m.symptoms.anyItem(
         item.matches("palpebral redness")|
         item.matches("diffuse redness")|
         item.matches("watery")|
@@ -89,7 +88,7 @@ with ruleset('eye_disease'):
         p.assert_fact('diagnosis'| {'disease': 'Viral Conjunctivitis'})
 
     # Define rule for Subconjunctival Hemorrhage
-    @when_all(m.symptoms.allItems(
+    @when_all(m.symptoms.anyItem(
         item.matches("bright red eye")|
         item.matches("no pain")|
         item.matches("no malvision")))
@@ -97,28 +96,28 @@ with ruleset('eye_disease'):
         p.assert_fact('diagnosis', {'disease': 'Subconjunctival Hemorrhage'})
 
     # Define rule for Keratitis Sicca
-    @when_all(m.symptoms.allItems(
+    @when_all(m.symptoms.anyItem(
         item.matches("burning")|
         item.matches("gritty sensation")))
     def keratitis_sicca(p):
         p.assert_fact('diagnosis', {'disease': 'Keratitis Sicca'})
 
     # Define rule for Pingueculum
-    @when_all(m.symptoms.allItems(
+    @when_all(m.symptoms.anyItem(
         item.matches("redness")|
         item.matches("inflamed")))
     def pingueculum(p):
         p.assert_fact('diagnosis', {'disease': 'Pingueculum'})
 
     # Define rule for Episcleritis
-    @when_all(m.symptoms.allItems(
+    @when_all(m.symptoms.anyItem(
         item.matches("discomfort")|
         item.matches("localized redness")))
     def episcleritis(p):
         p.assert_fact('diagnosis', {'disease': 'Episcleritis'})
 
     # Define rule for Corneal Abrasion
-    @when_all(m.symptoms.allItems(
+    @when_all(m.symptoms.anyItem(
         item.matches("redness")|
         item.matches("tearing")|
         item.matches("photophobia")|
@@ -127,7 +126,7 @@ with ruleset('eye_disease'):
         p.assert_fact('diagnosis', {'disease': 'Corneal Abrasion'})
 
     # Define rule for Viral Keratitis
-    @when_all(m.symptoms.allItems(
+    @when_all(m.symptoms.anyItem(
         item.matches("redness")|
         item.matches("watery discharge")|
         item.matches("foreign body sensation")))
@@ -135,7 +134,7 @@ with ruleset('eye_disease'):
         p.assert_fact('diagnosis', {'disease': 'Viral Keratitis'})
 
     # Define rule for Bacterial Keratitis
-    @when_all(m.symptoms.allItems(
+    @when_all(m.symptoms.anyItem(
         item.matches("redness")|
         item.matches("pain")|
         item.matches("purulent discharge")|
@@ -144,7 +143,7 @@ with ruleset('eye_disease'):
         p.assert_fact('diagnosis', {'disease': 'Bacterial Keratitis'})
 
     # Define rule for Hyphema
-    @when_all(m.symptoms.allItems(
+    @when_all(m.symptoms.anyItem(
         item.matches("decreased vision")|
         item.matches("pain")|
         item.matches("redness")|
@@ -153,7 +152,7 @@ with ruleset('eye_disease'):
         p.assert_fact('diagnosis', {'disease': 'Hyphema'})
 
     # Define rule for Hypopyon
-    @when_all(m.symptoms.allItems(
+    @when_all(m.symptoms.anyItem(
         item.matches("decreased vision")|
         item.matches("pain")|
         item.matches("redness")|
@@ -162,7 +161,7 @@ with ruleset('eye_disease'):
         p.assert_fact('diagnosis', {'disease': 'Hypopyon'})
 
     # Define rule for Angle-Closure Glaucoma
-    @when_all(m.symptoms.allItems(
+    @when_all(m.symptoms.anyItem(
         item.matches("pain")|
         item.matches("headaches")|
         item.matches("nausea")|
@@ -173,7 +172,7 @@ with ruleset('eye_disease'):
         p.assert_fact('diagnosis', {'disease': 'Angle-Closure Glaucoma'})
 
     # Define rule for Iris Iritis
-    @when_all(m.symptoms.allItems(
+    @when_all(m.symptoms.anyItem(
         item.matches("pain")|
         item.matches("photophobia")|
         item.matches("decreased vision")|
@@ -185,7 +184,7 @@ with ruleset('eye_disease'):
         p.assert_fact('diagnosis', {'disease': 'Iris Iritis'})
 
     # Define rule for Cataract
-    @when_all(m.symptoms.allItems(
+    @when_all(m.symptoms.anyItem(
         item.matches("loss of vision")|
         item.matches("no pain")|
         item.matches("degradation of vision")))
@@ -193,7 +192,7 @@ with ruleset('eye_disease'):
         p.assert_fact('diagnosis', {'disease': 'Cataract'})
 
     # Define rule for Diabetic Retinopathy
-    @when_all(m.symptoms.allItems(
+    @when_all(m.symptoms.anyItem(
         item.matches("visual loss")|
         item.matches("macular edema")|
         item.matches("exudate deposition")|
@@ -204,7 +203,7 @@ with ruleset('eye_disease'):
         p.assert_fact('diagnosis', {'disease': 'Diabetic Retinopathy'})
 
     # Define rule for Hypertensive Retinopathy
-    @when_all(m.symptoms.allItems(
+    @when_all(m.symptoms.anyItem(
         item.matches("left reflex is obscured totally")|
         item.matches("light reflex occupies most of the width of vessels")|
         item.matches("nicking")))
@@ -215,6 +214,7 @@ with ruleset('eye_disease'):
     @when_all(none(+m.disease))
     def no_diagnosis(p):
         p.assert_fact('diagnosis', {'disease': 'Not Found'})
+        
 
 
 # Diagnosis ruleset to print out the detected diagnosis
@@ -233,12 +233,16 @@ async def index():
     
     try:
         symptoms_request = request.args.get("symptoms").split(",")
+        symptoms_request = [x.strip().replace("+"," ") for x in symptoms_request]
+
         post("eye_disease",{"symptoms":symptoms_request})
 
         if diagnoses:
+            finalDiagnoses = diagnoses
+            diagnoses = []
             return {
                 "message":"Penyakit Ditemukan",
-                "data":diagnoses
+                "data":finalDiagnoses
             }
         
         return {
